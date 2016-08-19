@@ -1276,7 +1276,7 @@ void Font::Init(FT_Face& face)
             if (temp_glyph_data.find(c) == temp_glyph_data.end() && GenerateGlyph(face, c)) {
                 const FT_Bitmap& glyph_bitmap = face->glyph->bitmap;
 
-                if (x + glyph_bitmap.width >= BUF_WIDTH) { // start a new row of glyph images
+                if (x + X(glyph_bitmap.width) >= BUF_WIDTH) { // start a new row of glyph images
                     if (x > max_x) max_x = x;
                     x = X0;
                     y += m_height;
@@ -1317,12 +1317,12 @@ void Font::Init(FT_Face& face)
                 // record info on how to find and use this glyph later
                 temp_glyph_data[c] =
                     TempGlyphData(static_cast<int>(buffer_vec.size()) - 1,
-                                  Pt(x, y + FT_MAGIC_NUMBER), Pt(x + glyph_bitmap.width, y + m_height + FT_MAGIC_NUMBER),
+                                  Pt(x, y + FT_MAGIC_NUMBER), Pt(x + X(glyph_bitmap.width), y + m_height + FT_MAGIC_NUMBER),
                                   X(static_cast<int>((std::ceil(face->glyph->metrics.horiBearingX / 64.0)))),
                                   X(static_cast<int>((std::ceil(face->glyph->metrics.horiAdvance / 64.0)))));
 
                 // advance buffer write-position
-                x += glyph_bitmap.width;
+                x += X(glyph_bitmap.width);
             }
         }
     }
