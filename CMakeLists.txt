@@ -161,6 +161,10 @@ include_directories(${CMAKE_HOME_DIRECTORY})
 ########################################
 # Dependencies                         #
 ########################################
+if(CMAKE_COMPILER_IS_GNUCXX)
+    add_definitions(-std=c++0x)
+endif()
+
 set(Boost_USE_STATIC_LIBS ${BUILD_STATIC})
 set(Boost_USE_MULTITHREADED ${BUILD_MULTI_THREADED})
 find_package(Boost ${MINIMUM_BOOST_VERSION} COMPONENTS ${MINIMUM_BOOST_COMPONENTS})
