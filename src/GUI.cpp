@@ -779,7 +779,7 @@ void GUI::SetFocusWnd(Wnd* wnd)
 void GUI::Wait(unsigned int ms)
 {
     boost::xtime t;
-    boost::xtime_get(&t, boost::TIME_UTC);
+    boost::xtime_get(&t, boost::TIME_UTC_);
     unsigned int ns_sum = t.nsec + ms * 1000000;
     const unsigned int NANOSECONDS_PER_SECOND = 1000000000;
     unsigned int delta_secs = ns_sum / NANOSECONDS_PER_SECOND;
