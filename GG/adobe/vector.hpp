@@ -454,7 +454,7 @@ typename vector<T, A>::iterator vector<T, A>::insert(iterator p, size_type n, co
         
         if (n < after) {
             move_append(last - n, last);
-            move_backward(p, last - n, last);
+            adobe::move_backward(p, last - n, last);
             std::fill_n(p, n, x);
         } else {
             std::uninitialized_fill_n(last, n - after, x);
