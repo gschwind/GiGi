@@ -41,7 +41,6 @@ set(THIS_LIB_SOURCES
     dialogs/FileDlg.cpp
     dialogs/ThreeButtonDlg.cpp
 
-    ../libltdl/ltdl.c
 )
 
 set_source_files_properties(${CMAKE_HOME_DIRECTORY}/libltdl/ltdl.c PROPERTIES COMPILE_DEFINITIONS HAVE_CONFIG_H=1)

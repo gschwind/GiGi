@@ -9,7 +9,7 @@ macro (make_gigi_tutorial name)
             PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
         )
-        target_link_libraries(${name} GiGiSDL ${Boost_LIBRARIES})
+target_link_libraries(${name} GiGiSDL ${Boost_LIBRARIES} ${LTDL_LIBRARIES})
     endif ()
 endmacro ()
 

@@ -32,11 +32,7 @@
 
 #include <GG/GUI.h>
 
-#if defined(__APPLE__) && defined(__MACH__)
-# include "../libltdl/ltdl.h"
-#else
-# include <GG/ltdl.h>
-#endif
+# include <ltdl.h>
 
 #include <string>
 
