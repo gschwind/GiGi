@@ -162,7 +162,8 @@ include_directories(${CMAKE_HOME_DIRECTORY})
 # Dependencies                         #
 ########################################
 if(CMAKE_COMPILER_IS_GNUCXX)
-    add_definitions(-std=c++0x)
+    add_definitions(-std=c++11)
+    add_definitions(-ftemplate-backtrace-limit=0)
 endif()
 
 set(Boost_USE_STATIC_LIBS ${BUILD_STATIC})
@@ -305,8 +306,6 @@ endif ()
 # Recurse Into Sources                 #
 ########################################
 add_subdirectory(src)
-
-add_subdirectory(test)
 
 if (BUILD_TUTORIALS)
     add_subdirectory(tutorial)
