@@ -42,8 +42,9 @@
 #include <GG/glext.h>
 
 // include useful boost headers
+#include <boost/scoped_array.hpp>
 #include <boost/cstdint.hpp>
-#include <boost/signal.hpp>
+#include <boost/signals2.hpp>
 
 // other headers
 #include <GG/Enum.h>

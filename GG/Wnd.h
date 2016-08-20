@@ -217,7 +217,7 @@ extern GG_API const WndFlag MODAL;
     complete customization, each Wnd may have one installed as well.  The
     GetStyleFactory() method returns the one installed in the Wnd, if one
     exists, or the GUI-wide one otherwise. */
-class GG_API Wnd : public boost::signals::trackable
+class GG_API Wnd : public boost::signals2::trackable
 {
 public:
     /** \brief The data necessary to represent a browse info mode.

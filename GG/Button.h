@@ -55,7 +55,7 @@ public:
     };
 
     /** \name Signal Types */ ///@{
-    typedef boost::signal<void ()> ClickedSignalType; ///< Emitted when the button is clicked by the user
+    typedef boost::signals2::signal<void ()> ClickedSignalType; ///< Emitted when the button is clicked by the user
     //@}
 
     /** \name Structors */ ///@{
@@ -141,7 +141,7 @@ class GG_API StateButton : public TextControl
 {
 public:
     /** \name Signal Types */ ///@{
-    typedef boost::signal<void (bool)> CheckedSignalType; ///< Emitted when the StateButton is checked or unchecked; the checked/unchecked status is indicated by the bool parameter
+    typedef boost::signals2::signal<void (bool)> CheckedSignalType; ///< Emitted when the StateButton is checked or unchecked; the checked/unchecked status is indicated by the bool parameter
     //@}
 
     /** \name Structors */ ///@{
@@ -217,7 +217,7 @@ class GG_API RadioButtonGroup : public Control
 {
 public:
     /** \name Signal Types */ ///@{
-    typedef boost::signal<void (std::size_t)> ButtonChangedSignalType; ///< emitted when the currently-selected button has changed; the new selected button's index in the group is provided (this may be NO_BUTTON if no button is currently selected)
+    typedef boost::signals2::signal<void (std::size_t)> ButtonChangedSignalType; ///< emitted when the currently-selected button has changed; the new selected button's index in the group is provided (this may be NO_BUTTON if no button is currently selected)
     //@}
 
     /** \name Structors */ ///@{
@@ -334,7 +334,7 @@ protected:
         ButtonSlot();
         ButtonSlot(StateButton* button_);
         StateButton*               button;
-        boost::signals::connection connection;
+        boost::signals2::connection connection;
     };
 
     /** \name Structors */ ///@{

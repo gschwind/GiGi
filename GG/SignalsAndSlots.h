@@ -48,8 +48,8 @@ namespace GG {
     _slot in slot group 0, at position \a at within group 0.  Slot call groups
     are called in ascending order. */
 template <class SigT> inline 
-boost::signals::connection 
-Connect(SigT& sig, const typename SigT::slot_type& _slot, boost::signals::connect_position at = boost::signals::at_back)
+boost::signals2::connection
+Connect(SigT& sig, const typename SigT::slot_type& _slot, boost::signals2::connect_position at = boost::signals2::at_back)
 {
     return sig.connect(_slot, at);
 }
@@ -58,8 +58,8 @@ Connect(SigT& sig, const typename SigT::slot_type& _slot, boost::signals::connec
     _slot in slot group \a grp, at position \a at within group \a grp.  Slot
     call groups are called in ascending order. */
 template <class SigT> inline 
-boost::signals::connection 
-Connect(SigT& sig, const typename SigT::slot_type& _slot, int grp, boost::signals::connect_position at = boost::signals::at_back)
+boost::signals2::connection
+Connect(SigT& sig, const typename SigT::slot_type& _slot, int grp, boost::signals2::connect_position at = boost::signals2::at_back)
 {
     return sig.connect(grp, _slot, at);
 }
