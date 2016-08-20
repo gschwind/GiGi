@@ -29,15 +29,7 @@
 #include <boost/bind.hpp>
 #include <boost/preprocessor/cat.hpp>
 
-#include <GG/Signal0.h>
-#include <GG/Signal1.h>
-#include <GG/Signal2.h>
-#include <GG/Signal3.h>
-#include <GG/Signal4.h>
-#include <GG/Signal5.h>
-#include <GG/Signal6.h>
-#include <GG/Signal7.h>
-#include <GG/Signal8.h>
+#include <GG/Signal.h>
 
 /** \file SignalsAndSlots.h \brief Contains the Connect() functions, which
     simplify the connection of boost signals and slots. */
