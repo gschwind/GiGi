@@ -26,6 +26,7 @@ set(THIS_LIB_SOURCES
     PluginInterface.cpp
     PtRect.cpp
     Scroll.cpp
+    ScrollPanel.cpp
     StaticGraphic.cpp
     StyleFactory.cpp
     TabWnd.cpp
