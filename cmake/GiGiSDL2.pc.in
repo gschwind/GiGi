@@ -1,0 +1,11 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${prefix}/lib@LIB_SUFFIX@
+includedir=${prefix}/include
+version=@GIGI_VERSION@
+
+Name: GiGiSDL2
+Description: An SDL-based input driver and application framework for use with libGiGi.
+Requires: GiGi = ${version} sdl2
+Version: ${version}
+Libs: -lGiGiSDL2 @pkg_config_libs@
+Cflags: 

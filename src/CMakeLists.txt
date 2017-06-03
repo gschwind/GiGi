@@ -101,4 +101,5 @@ if (UNIX)
 endif ()
 
 add_subdirectory(SDL)
+add_subdirectory(SDL2)
 add_subdirectory(Ogre)

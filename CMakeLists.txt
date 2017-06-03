@@ -48,6 +48,9 @@ option(USE_DEVIL
 option(BUILD_SDL_DRIVER
        "Builds GG SDL support (the GiGiSDL library)."
        ON)
+option(BUILD_SDL2_DRIVER
+       "Builds GG SDL2 support (the GiGiSDL2 library)."
+       ON)
 option(BUILD_OGRE_DRIVER
        "Builds GG Ogre support (the GiGiOgre library)."
        ON)
@@ -66,18 +69,20 @@ set(GG_PACKAGE_DEPENDENCY false)
 set(GG_DEVEL_PACKAGE_DEPENDENCY false)
 set(SDL_PACKAGE_DEPENDENCY false)
 set(SDL_DEVEL_PACKAGE_DEPENDENCY false)
+set(SDL2_PACKAGE_DEPENDENCY false)
+set(SDL2_DEVEL_PACKAGE_DEPENDENCY false)
 set(OGRE_OIS_PACKAGE_DEPENDENCY false)
 set(OGRE_OIS_DEVEL_PACKAGE_DEPENDENCY false)
 if (UNIX)
     set(PACKAGE_CONFIGURATIONS
-        NoPackage GiGi GiGiSDL GiGiOgre Full GiGiDevel GiGiSDLDevel GiGiOgreDevel FullDevel
+        NoPackage GiGi GiGiSDL GiGiSDL2 GiGiOgre Full GiGiDevel GiGiSDLDevel GiGiOgreDevel FullDevel
         CACHE INTERNAL
-        "The types of packages available for build.  NoPackage means leave everything in.  They follow the pattern {GiGi|GiGiSDL|GiGiOgre|Full}[Devel]."
+        "The types of packages available for build.  NoPackage means leave everything in.  They follow the pattern {GiGi|GiGiSDL|GiGiSDL2|GiGiOgre|Full}[Devel]."
     )
     set(PACKAGE_TYPE
         NoPackage
         CACHE STRING
-        "The type of package chosen for this build.  These allow you to build Debs and RPMs that contain the sublibraries within GG, or all of GG, binary-only or \"-devel\".  NoPackage means leave everything in.  They follow the pattern {GiGi|GiGiSDL|GiGiOgre|Full}[Devel]."
+        "The type of package chosen for this build.  These allow you to build Debs and RPMs that contain the sublibraries within GG, or all of GG, binary-only or \"-devel\".  NoPackage means leave everything in.  They follow the pattern {GiGi|GiGiSDL|GiGiSDL2|GiGiOgre|Full}[Devel]."
     )
     list_contains(package_type_valid ${PACKAGE_TYPE} ${PACKAGE_CONFIGURATIONS})
     if (NOT package_type_valid)
@@ -104,8 +109,14 @@ if (UNIX)
         if (${PACKAGE_TYPE} STREQUAL Full OR ${PACKAGE_TYPE} STREQUAL GiGiSDL)
             set(SDL_PACKAGE_DEPENDENCY true)
         endif ()
+        if (${PACKAGE_TYPE} STREQUAL Full OR ${PACKAGE_TYPE} STREQUAL GiGiSDL2)
+            set(SDL2_PACKAGE_DEPENDENCY true)
+        endif ()
         if (${PACKAGE_TYPE} STREQUAL FullDevel OR ${PACKAGE_TYPE} STREQUAL GiGiSDLDevel)
             set(SDL_DEVEL_PACKAGE_DEPENDENCY true)
+        endif ()
+        if (${PACKAGE_TYPE} STREQUAL FullDevel OR ${PACKAGE_TYPE} STREQUAL GiGiSDL2Devel)
+            set(SDL2_DEVEL_PACKAGE_DEPENDENCY true)
         endif ()
         if (${PACKAGE_TYPE} STREQUAL Full OR ${PACKAGE_TYPE} STREQUAL GiGiOgre)
             set(OGRE_OIS_PACKAGE_DEPENDENCY true)
@@ -125,6 +136,12 @@ endif ()
 macro (package_compatible var component)
     if (${component} MATCHES GiGiSDL)
         if (${PACKAGE_TYPE} STREQUAL NoPackage OR ${PACKAGE_TYPE} MATCHES Full OR ${PACKAGE_TYPE} MATCHES GiGiSDL)
+            set(${var} true)
+        else ()
+            set(${var} false)
+        endif ()
+    elseif (${component} MATCHES GiGiSDL2)
+        if (${PACKAGE_TYPE} STREQUAL NoPackage OR ${PACKAGE_TYPE} MATCHES Full OR ${PACKAGE_TYPE} MATCHES GiGiSDL2)
             set(${var} true)
         else ()
             set(${var} false)
@@ -276,6 +293,7 @@ endmacro ()
 if (UNIX AND NOT RUNTIME_ONLY_PACKAGE)
     install_pc_file(GiGi)
     install_pc_file(GiGiSDL)
+    install_pc_file(GiGiSDL2)
     install_pc_file(GiGiOgre)
 endif ()
 
@@ -383,6 +401,9 @@ if (NOT DEVEL_ONLY_PACKAGE)
     if (SDL_PACKAGE_DEPENDENCY)
         list(APPEND CPACK_RPM_PACKAGE_REQUIRES SDL>=1.2)
     endif ()
+    if (SDL2_PACKAGE_DEPENDENCY)
+        list(APPEND CPACK_RPM_PACKAGE_REQUIRES SDL2>=1.2)
+    endif ()
     if (OGRE_OIS_PACKAGE_DEPENDENCY)
         list(APPEND CPACK_RPM_PACKAGE_REQUIRES ogre>=1.6 libois1>=1.2)
     endif ()
@@ -447,6 +468,14 @@ cpack_add_component(
     COMPONENT_GIGISDL
     DISPLAY_NAME GiGiSDL
     DESCRIPTION "An SDL input driver (http://www.libsdl.org)."
+    GROUP COMPONENT_GROUP_RUNTIME
+    DEPENDS COMPONENT_GIGI
+)
+
+cpack_add_component(
+    COMPONENT_GIGISDL2
+    DISPLAY_NAME GiGiSDL2
+    DESCRIPTION "An SDL2 input driver (http://www.libsdl.org)."
     GROUP COMPONENT_GROUP_RUNTIME
     DEPENDS COMPONENT_GIGI
 )
