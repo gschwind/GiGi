@@ -84,6 +84,20 @@ void SDL2GUI::Exit(int code)
     exit(code);
 }
 
+void SDL2GUI::Enter2DMode()
+{ Enter2DModeImpl(Value(AppWidth()), Value(AppHeight())); }
+
+void SDL2GUI::Exit2DMode()
+{
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+
+    glPopAttrib();
+}
+
 SDL2GUI* SDL2GUI::GetGUI()
 { return dynamic_cast<SDL2GUI*>(GUI::GetGUI()); }
 
@@ -135,6 +149,35 @@ void SDL2GUI::SetAppSize(const Pt& size)
     m_app_height = size.y;
 }
 
+void SDL2GUI::Enter2DModeImpl(int width, int height)
+{
+    glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_TEXTURE_BIT);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_CULL_FACE);
+    glEnable(GL_TEXTURE_2D);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glViewport(0, 0, width, height);
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+
+    // This sets up the world coordinate space with the origin in the
+    // upper-left corner and +x and +y directions right and down,
+    // respectively.
+    glOrtho(0.0, width, height, 0.0, -100.0, 100.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+}
+
 void SDL2GUI::SDLInit()
 {
 //    const SDL_VideoInfo* vid_info = 0;
@@ -144,16 +187,13 @@ void SDL2GUI::SDLInit()
         Exit(1);
     }
 
-//    vid_info = SDL_GetVideoInfo();
-//
-//    if (!vid_info) {
-//        std::cerr << "Video info query failed: " << SDL_GetError();
-//        Exit(1);
-//    }
-
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 2);
 
-    m_window = SDL_CreateWindow(s_impl->m_app_name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Value(m_app_width), Value(m_app_height), SDL_WINDOW_OPENGL);
+    m_window = SDL_CreateWindow(AppName().c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Value(m_app_width), Value(m_app_height), SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
     if (m_window == 0) {
         std::cerr << "Video mode set failed: " << SDL_GetError();
         Exit(1);
@@ -188,6 +228,7 @@ void SDL2GUI::GLInit()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(50.0, ratio, 1.0, 10.0);
+
 }
 
 void SDL2GUI::HandleSystemEvents()

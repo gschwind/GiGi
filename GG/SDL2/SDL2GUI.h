@@ -98,8 +98,8 @@ public:
     void           operator()();      ///< external interface to Run()
     virtual void   Exit(int code);
 
-    virtual void   Enter2DMode() = 0;
-    virtual void   Exit2DMode() = 0;
+    virtual void   Enter2DMode();
+    virtual void   Exit2DMode();
     //@}
 
     static SDL2GUI* GetGUI();                             ///< allows any code to access the gui framework by calling SDLGUI::GetGUI()
@@ -107,6 +107,7 @@ public:
 
 protected:
     void SetAppSize(const GG::Pt& size);
+    void Enter2DModeImpl(int width, int height);
 
     // these are called at the beginning of the gui's execution
     virtual void   SDLInit();        ///< initializes SDL, FE, and SDL OpenGL functionality
